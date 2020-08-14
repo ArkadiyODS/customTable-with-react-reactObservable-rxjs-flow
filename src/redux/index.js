@@ -1,16 +1,16 @@
 //@flow
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { createEpicMiddleware } from "redux-observable";
-import { GridConfigReducer, GridConfigEpic } from "./gridConfig";
+import { GridReducer, GridEpic } from "./grid";
 
 export default function configureStore() {
   const epicMiddleware = createEpicMiddleware();
   const store = createStore(
     combineReducers({
-      grid: combineReducers({ config: GridConfigReducer }),
+      grid: GridReducer,
     }),
     applyMiddleware(epicMiddleware)
   );
-  epicMiddleware.run(GridConfigEpic);
+  epicMiddleware.run(GridEpic);
   return store;
 }
