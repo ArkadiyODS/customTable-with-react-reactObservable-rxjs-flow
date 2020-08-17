@@ -26,7 +26,8 @@ export const CellContainer = styled.div`
   display: flex;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: ${(props) =>
+    props.$filterable === false ? "flex-start" : "center"};
 `;
 
 export const NoDataContainer = styled.div`
@@ -46,8 +47,18 @@ export const Row = styled.div`
     props.$backgroundColor && `background-color: ${props.$backgroundColor}`}
 `;
 
+export const CheckboxContainer = styled.div`
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  ${(props) =>
+    props.$borderColor && `border-right: 1px solid ${props.$borderColor}}`}
+`;
+
 export const GridContainer = styled.div`
   border: 1px solid ${BORDER_COLOR};
+  margin-bottom: 10px;
 `;
 
 export const LoaderContainer = styled.div`
@@ -76,7 +87,7 @@ export const SortingIcon = styled.div`
   width: 8px;
   ${(props) => {
     const color = props.$active || props.$defaultColor;
-    if (props.order === "desc") {
+    if (props.id === "desc") {
       return ` border-top: 6px solid ${color}`;
     }
     return ` border-bottom: 7px solid ${color}`;

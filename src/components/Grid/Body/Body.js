@@ -1,17 +1,23 @@
 //@flow
-import * as React from "react";
+import React from "react";
+import { FixedSizeList } from "react-window";
 import type { GridMeta } from "../metaTypes";
 import Cell from "../Cell/Cell";
-import { FixedSizeList } from "react-window";
+import Checkbox from "../../Checkbox";
+import { isItemAvailableInArray } from "../../../utils";
+
 import {
   BORDER_COLOR,
   ODD_ROW_BACKGROUND,
   NoDataContainer,
   Row,
+  CheckboxContainer,
 } from "../../shared";
 
 type BodyProps = GridMeta & {
   data: Array<any>,
+  selected: Array<any>,
+  selectionChangeHandler?: (selectedItem: any, isSelected: boolean) => void,
 };
 
 export default function (props: BodyProps) {
@@ -35,6 +41,19 @@ export default function (props: BodyProps) {
               columns={props.columns}
               $backgroundColor={index % 2 ? null : ODD_ROW_BACKGROUND}
             >
+              <CheckboxContainer>
+                <Checkbox
+                  checked={isItemAvailableInArray(
+                    props.data[index],
+                    props.selected,
+                    props.dataSourceIdentifier
+                  )}
+                  onChange={((data) => (isSelected) =>
+                    props.selectionChangeHandler(data, isSelected))(
+                    props.data[index]
+                  )}
+                />
+              </CheckboxContainer>
               {props.columns
                 .filter((column) => column.visible)
                 .map((column, i) => (

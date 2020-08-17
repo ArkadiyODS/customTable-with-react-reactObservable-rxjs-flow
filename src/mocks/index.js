@@ -1,8 +1,11 @@
 import React from "react";
 import { get } from "lodash";
 
+const NumberOfUsers = 100;
+
 export const mockedGridMeta = {
-  fetchUrl: "https://randomuser.me/api?results=50&seed=b45951b2648c0c64",
+  fetchUrl: `https://randomuser.me/api?results=${NumberOfUsers}&seed=b45951b2648c0c64`,
+  dataSourceIdentifier: "email",
   rowsNumber: 5,
   rowHeight: 80,
   columns: [

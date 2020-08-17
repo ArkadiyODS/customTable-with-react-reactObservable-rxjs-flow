@@ -2,19 +2,32 @@
 import React from "react";
 import type { ColumnMeta, Filter, Sorting } from "../metaTypes";
 import HeaderCell from "../HeaderCell/HeaderCell";
-import { HeaderContainer } from "../../shared";
+import Checkbox from "../../Checkbox";
+import {
+  LIGHT_GREY_COLOR,
+  HeaderContainer,
+  CheckboxContainer,
+} from "../../shared";
 
 type HeaderProps = {
   columns: Array<ColumnMeta>,
   filter: Filter,
+  filterChangeHandler?: (value: Filter) => void,
   sorting: Sorting,
-  filterChangeHandler?: (value: Filter) => any,
-  sortingChangeHandler?: (value: Sorting) => any,
+  sortingChangeHandler?: (value: Sorting) => void,
+  allSelected: boolean,
+  selectionChangeHandler?: (value: boolean) => void,
 };
 
 export default function (props: HeaderProps) {
   return (
     <HeaderContainer>
+      <CheckboxContainer $borderColor={LIGHT_GREY_COLOR}>
+        <Checkbox
+          checked={props.allSelected}
+          onChange={props.selectionChangeHandler}
+        />
+      </CheckboxContainer>
       {props.columns
         .filter((column) => column.visible)
         .map((column, i) => (

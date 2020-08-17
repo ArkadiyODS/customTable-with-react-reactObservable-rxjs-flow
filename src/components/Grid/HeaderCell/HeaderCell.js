@@ -16,8 +16,8 @@ import {
 type HeaderCellProps = ColumnMeta & {
   sortingValue?: SortingEnum,
   filterValue?: string,
-  filterChangeHandler?: (value: Filter) => any,
-  sortingChangeHandler?: (value: Sorting) => any,
+  filterChangeHandler?: (value: Filter) => void,
+  sortingChangeHandler?: (value: Sorting) => void,
 };
 
 export default memo<HeaderCellProps>((props: HeaderCellProps) => {
@@ -55,6 +55,7 @@ export default memo<HeaderCellProps>((props: HeaderCellProps) => {
       $order={order}
       $width={width}
       $borderColor={LIGHT_GREY_COLOR}
+      $filterable={filterable}
     >
       <HeaderTitleWrapper color={LIGHT_GREY_COLOR}>
         <LG>{title}</LG>
@@ -64,14 +65,12 @@ export default memo<HeaderCellProps>((props: HeaderCellProps) => {
               id="asc"
               $active={sortingValue === "asc" && ACTION_COLOR}
               $defaultColor={LIGHT_GREY_COLOR}
-              order="asc"
               onClick={onSortingChange}
             ></SortingIcon>
             <SortingIcon
               id="desc"
               $active={sortingValue === "desc" && ACTION_COLOR}
               $defaultColor={LIGHT_GREY_COLOR}
-              order="desc"
               onClick={onSortingChange}
             ></SortingIcon>
           </div>

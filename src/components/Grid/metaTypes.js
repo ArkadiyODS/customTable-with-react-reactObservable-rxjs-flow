@@ -1,7 +1,7 @@
 //@flow
 import type { Node } from "react";
 
-export type SortingEnum = "acs" | "desc" | "none";
+export type SortingEnum = "asc" | "desc" | "none";
 
 export type Sorting = Map<string, SortingEnum>;
 
@@ -22,6 +22,7 @@ export type GridMeta = {
   selectable?: boolean,
   rowHeight: number,
   rowsNumber: number,
+  dataSourceIdentifier: string,
 };
 
 export type Filter = {

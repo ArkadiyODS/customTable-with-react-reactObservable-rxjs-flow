@@ -8,7 +8,9 @@ export const UPDATE_GRID_DATA = "UPDATE_GRID_DATA",
   UPDATE_FILTER = "UPDATE_FILTER",
   RESET_FILTER = "RESET_FILTER",
   UPDATE_SORTING = "UPDATE_SORTING",
-  RESET_SORTING = "RESET_SORTING";
+  RESET_SORTING = "RESET_SORTING",
+  UPDATE_GRID_SELECTION = "UPDATE_GRID_SELECTION";
+// UPDATE_GRID_SELECTION_SINGLE = "UPDATE_GRID_SELECTION_SINGLE";
 
 type FilterAction = {
   type: "UPDATE_FILTER" | "RESET_FILTER",
@@ -30,8 +32,13 @@ type ErrorAction = {
 };
 
 type GridDataAction = {
-  type: "UPDATE_GRID_DATA",
+  type: "UPDATE_GRID_DATA" | "UPDATE_GRID_SELECTION",
   payload: Array<any>,
+};
+
+type GridDataSingleSelectionAction = {
+  type: "UPDATE_GRID_SELECTION_SINGLE",
+  payload: { selectedItem: any, isSelected: boolean },
 };
 
 export type GridAction =
@@ -39,6 +46,7 @@ export type GridAction =
   | SortingAction
   | LoadingAction
   | GridDataAction
+  | GridDataSingleSelectionAction
   | ErrorAction;
 
 export const startLoadingGridData = (): GridAction => ({
@@ -68,3 +76,17 @@ export const updateSorting = (payload: Sorting): GridAction => ({
   type: UPDATE_SORTING,
   payload,
 });
+
+export const updateGridSelection = (payload: Array<any>): GridAction => ({
+  type: UPDATE_GRID_SELECTION,
+  payload,
+});
+
+//Not necessary to run it through redux
+// export const updateGridSelectionSingle = (payload: {
+//   selectedItem: any,
+//   isSelected: boolean,
+// }): GridAction => ({
+//   type: UPDATE_GRID_SELECTION_SINGLE,
+//   payload,
+// });
