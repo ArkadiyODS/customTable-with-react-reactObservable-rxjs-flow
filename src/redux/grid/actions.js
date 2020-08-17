@@ -1,15 +1,5 @@
 //@flow
-
-import type {
-  GridMeta,
-  Filter,
-  Sorting,
-} from "../../components/Grid/metaTypes";
-
-export type GridAction = {
-  type: string,
-  payload?: any,
-};
+import type { Filter, Sorting } from "../../components/Grid/metaTypes";
 
 export const UPDATE_GRID_DATA = "UPDATE_GRID_DATA",
   START_LOADING_GRID_DATA = "START_LOADING_GRID_DATA",
@@ -19,6 +9,37 @@ export const UPDATE_GRID_DATA = "UPDATE_GRID_DATA",
   RESET_FILTER = "RESET_FILTER",
   UPDATE_SORTING = "UPDATE_SORTING",
   RESET_SORTING = "RESET_SORTING";
+
+type FilterAction = {
+  type: "UPDATE_FILTER" | "RESET_FILTER",
+  payload: Filter,
+};
+
+type SortingAction = {
+  type: "UPDATE_SORTING" | "RESET_SORTING",
+  payload: Sorting,
+};
+
+type LoadingAction = {
+  type: "START_LOADING_GRID_DATA" | "COMPLETE_LOADING_GRID_DATA",
+};
+
+type ErrorAction = {
+  type: "FAIL_LOADING_GRID_DATA",
+  payload: string,
+};
+
+type GridDataAction = {
+  type: "UPDATE_GRID_DATA",
+  payload: Array<any>,
+};
+
+export type GridAction =
+  | FilterAction
+  | SortingAction
+  | LoadingAction
+  | GridDataAction
+  | ErrorAction;
 
 export const startLoadingGridData = (): GridAction => ({
   type: START_LOADING_GRID_DATA,

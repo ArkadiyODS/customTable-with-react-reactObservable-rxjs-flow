@@ -23,11 +23,7 @@ import {
 } from "rxjs/operators";
 import * as Actions from "./actions";
 import type { GridState } from "./reducer";
-import type {
-  Filter,
-  Sorting,
-  SortingEnum,
-} from "../../components/Grid/metaTypes";
+import type { Filter, Sorting } from "../../components/Grid/metaTypes";
 import { get, orderBy } from "lodash";
 
 const logger = (
@@ -48,18 +44,21 @@ const loadGridData = (
     switchMap(() =>
       fromFetch(state$.value.grid.meta.fetchUrl, {
         selector: (r) => r.json(),
-      })
-    ),
-    map((response) => applyFilter(response.results, state$.value.grid.filter)),
-    map((data) => applySorting(data, state$.value.grid.sorting)),
-    delay(1000),
-    mergeMap((filteredData) =>
-      of(
-        Actions.updateGridData(filteredData),
-        Actions.completeLoadingGridData()
+      }).pipe(
+        map((response) =>
+          applyFilter(response.results, state$.value.grid.filter)
+        ),
+        map((data) => applySorting(data, state$.value.grid.sorting)),
+        delay(1000),
+        mergeMap((filteredData) =>
+          of(
+            Actions.updateGridData(filteredData),
+            Actions.completeLoadingGridData()
+          )
+        ),
+        catchError((err) => of(Actions.failLoadingGridData(err.message)))
       )
-    ),
-    catchError((err) => of(Actions.failLoadingGridData(err.message)))
+    )
   );
 
 const updateFilter = (
@@ -99,7 +98,7 @@ const applyFilter = (data: Array<any>, filter: Filter): Array<any> => {
   );
 };
 
-const applySorting = (data: Array<any>, sorting: Map<Sorting>): Array<any> => {
+const applySorting = (data: Array<any>, sorting: Sorting): Array<any> => {
   const sorter = Array.from(sorting.entries());
   if (!sorter.length) {
     return data;

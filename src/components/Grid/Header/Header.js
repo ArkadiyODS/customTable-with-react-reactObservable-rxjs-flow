@@ -1,20 +1,13 @@
 //@flow
-import React, { useState, useCallback } from "react";
+import React from "react";
 import type { ColumnMeta, Filter, Sorting } from "../metaTypes";
 import HeaderCell from "../HeaderCell/HeaderCell";
-import { PALETTE } from "@zendeskgarden/react-theming";
-import styled from "styled-components";
-
-const HeaderContainer = styled.div`
-  display: flex;
-  background-color: ${PALETTE.azure["M400"]};
-  overflow: scroll;
-`;
+import { HeaderContainer } from "../../shared";
 
 type HeaderProps = {
   columns: Array<ColumnMeta>,
   filter: Filter,
-  sorting: Map<Sorting>,
+  sorting: Sorting,
   filterChangeHandler?: (value: Filter) => any,
   sortingChangeHandler?: (value: Sorting) => any,
 };

@@ -1,32 +1,32 @@
 //@flow
-import React from "react";
+import * as React from "react";
 import type { GridMeta, Filter, Sorting } from "./metaTypes";
 import { Spinner } from "@zendeskgarden/react-loaders";
-import { PALETTE } from "@zendeskgarden/react-theming";
 import Header from "./Header/Header";
 import Body from "./Body/Body";
-import styled from "styled-components";
-
-const GridContainer = styled.div``;
-
-const LoaderContainer = styled.div`
-  height: 200px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+import {
+  ACTION_COLOR,
+  ERROR_COLOR,
+  GridContainer,
+  LoaderContainer,
+  ErrorContainer,
+} from "../shared";
 
 type GridProps = {
   meta: GridMeta,
   loader: boolean,
-  dataSource: Array<{}>,
+  error: string,
+  dataSource: Array<any>,
   filter: Filter,
-  sorting: Map<Sorting>,
+  sorting: Sorting,
   onFilterChange?: (update: Filter) => void,
   onSortingChange?: (update: Sorting) => void,
   currentPage?: number,
   rows?: number,
 };
+
+//TODO (Grid Meta change - resize, order, horizontal scrolling)
+//TODO (Grid selection)
 
 export default function (props: GridProps) {
   return (
@@ -38,13 +38,19 @@ export default function (props: GridProps) {
         sorting={props.sorting}
         sortingChangeHandler={props.onSortingChange}
       />
-      {props.loader ? (
+      {props.loader && (
         <LoaderContainer>
-          <Spinner color={PALETTE.blue[500]} size="48px" />
+          <Spinner color={ACTION_COLOR} duration={625} size="48px" />
         </LoaderContainer>
-      ) : (
-        <Body columns={props.meta.columns} data={props.dataSource} />
       )}
+      {!props.loader &&
+        (props.error !== "" ? (
+          <ErrorContainer $color={ERROR_COLOR}>
+            {props.error.toLocaleUpperCase()}
+          </ErrorContainer>
+        ) : (
+          <Body {...{ ...props.meta, data: props.dataSource }} />
+        ))}
     </GridContainer>
   );
 }

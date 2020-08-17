@@ -12,7 +12,7 @@ export default React.memo<CellProps>((props: CellProps) => {
   const { data, dataPath, renderer } = props;
   const content = get(data, dataPath);
   return (
-    <CellContainer width={props.width}>
+    <CellContainer $order={props.order} $width={props.width}>
       {renderer ? renderer(props, data) : <div>{content}</div>}
     </CellContainer>
   );

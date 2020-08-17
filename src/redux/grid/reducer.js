@@ -1,18 +1,20 @@
 //@flow
-import { mockedGridMeta, mockedGridData } from "../../mocks";
+import { mockedGridMeta } from "../../mocks";
 import * as Actions from "./actions";
 import type {
   GridMeta,
   Filter,
   Sorting,
+  SortingEnum,
 } from "../../components/Grid/metaTypes";
 
 export type GridState = {
-  meta: GridMeta,
-  data: Array<any>,
-  filter: Filter,
-  sorting: Map<Sorting>,
-  loader: boolean,
+  +meta: GridMeta,
+  +data: Array<any>,
+  +filter: Filter,
+  +sorting: Sorting,
+  +loader: boolean,
+  +error: string,
 };
 
 const initialState: GridState = {
@@ -21,6 +23,7 @@ const initialState: GridState = {
   filter: {},
   sorting: new Map(),
   loader: true,
+  error: "",
 };
 
 export default function (
@@ -32,19 +35,22 @@ export default function (
       return { ...state, loader: true };
     case Actions.COMPLETE_LOADING_GRID_DATA:
       return { ...state, loader: false };
+    case Actions.FAIL_LOADING_GRID_DATA:
+      return { ...state, error: action.payload, loader: false };
     case Actions.UPDATE_GRID_DATA:
-      return { ...state, data: action.payload || [] };
+      return { ...state, data: action.payload || [], error: "" };
     case Actions.UPDATE_FILTER:
-      const newFilter = { ...state.filter, ...action.payload };
+      const newFilter: Filter = { ...state.filter, ...action.payload };
       return { ...state, filter: newFilter };
     case Actions.UPDATE_SORTING:
-      const newSorting = new Map(state.sorting);
-      const key = Object.keys(action.payload)[0];
-      const value = action.payload[key];
-      if (value === "none") {
-        newSorting.delete(key);
+      const newSorting = new Map<string, SortingEnum>(state.sorting);
+      const [key: string, value: SortingEnum] = Array.from(
+        action.payload.entries()
+      )[0];
+      if (value === "asc" || value === "desc") {
+        newSorting.set(key, value);
       } else {
-        newSorting.set(key, action.payload[key]);
+        newSorting.delete(key);
       }
       return { ...state, sorting: newSorting };
     default:

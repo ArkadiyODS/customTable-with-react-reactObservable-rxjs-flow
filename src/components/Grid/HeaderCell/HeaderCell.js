@@ -3,36 +3,19 @@ import React, { memo, useCallback } from "react";
 import type { ColumnMeta, Filter, Sorting, SortingEnum } from "../metaTypes";
 import { LG } from "@zendeskgarden/react-typography";
 import { Input } from "@zendeskgarden/react-forms";
-import { PALETTE } from "@zendeskgarden/react-theming";
-import { CellContainer } from "../../shared";
-import styled from "styled-components";
-
-const SortingIcon = styled.div`
-  width: 8px;
-  ${(props) => {
-    const color = props.active || props.defaultColor || "#fff";
-    if (props.order === "desc") {
-      return ` border-top: 6px solid ${color}`;
-    }
-    return ` border-bottom: 7px solid ${color}`;
-  }};
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  cursor: pointer;
-  margin: 3px 0;
-`;
-
-const HeaderTitleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 10px;
-  color: ${(props) => props.color || "inherit"};
-`;
+import {
+  ACTION_COLOR,
+  PRIMARY_COLOR,
+  LIGHT_GREY_COLOR,
+  BORDER_COLOR,
+  CellContainer,
+  SortingIcon,
+  HeaderTitleWrapper,
+} from "../../shared";
 
 type HeaderCellProps = ColumnMeta & {
-  sortingValue: SortingEnum,
-  filterValue: string,
+  sortingValue?: SortingEnum,
+  filterValue?: string,
   filterChangeHandler?: (value: Filter) => any,
   sortingChangeHandler?: (value: Sorting) => any,
 };
@@ -48,6 +31,7 @@ export default memo<HeaderCellProps>((props: HeaderCellProps) => {
     filterChangeHandler,
     sortingChangeHandler,
     width,
+    order,
   } = props;
   const onFilterChange = useCallback(
     (evt) => {
@@ -60,26 +44,33 @@ export default memo<HeaderCellProps>((props: HeaderCellProps) => {
   const onSortingChange = useCallback(
     (evt) => {
       const { id } = evt.target;
-      const value = id === sortingValue ? "none" : id;
-      sortingChangeHandler && sortingChangeHandler({ [dataPath]: value });
+      const value: SortingEnum = id === sortingValue ? "none" : id;
+      const sorter = new Map<string, SortingEnum>([[dataPath, value]]);
+      sortingChangeHandler && sortingChangeHandler(sorter);
     },
     [dataPath, sortingValue, sortingChangeHandler]
   );
   return (
-    <CellContainer width={width}>
-      <HeaderTitleWrapper color={PALETTE.grey["100"]}>
+    <CellContainer
+      $order={order}
+      $width={width}
+      $borderColor={LIGHT_GREY_COLOR}
+    >
+      <HeaderTitleWrapper color={LIGHT_GREY_COLOR}>
         <LG>{title}</LG>
         {sortable && (
           <div>
             <SortingIcon
               id="asc"
-              active={sortingValue === "asc" && PALETTE.product["guide"]}
+              $active={sortingValue === "asc" && ACTION_COLOR}
+              $defaultColor={LIGHT_GREY_COLOR}
               order="asc"
               onClick={onSortingChange}
             ></SortingIcon>
             <SortingIcon
               id="desc"
-              active={sortingValue === "desc" && PALETTE.product["guide"]}
+              $active={sortingValue === "desc" && ACTION_COLOR}
+              $defaultColor={LIGHT_GREY_COLOR}
               order="desc"
               onClick={onSortingChange}
             ></SortingIcon>

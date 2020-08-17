@@ -1,5 +1,5 @@
 //@flow
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { Filter, Sorting } from "../Grid/metaTypes";
 import {
@@ -11,7 +11,7 @@ import Grid from "../Grid/Grid";
 
 export default function () {
   const dispatch = useDispatch();
-  const { meta, data, filter, sorting, loader } = useSelector(
+  const { meta, data, filter, sorting, loader, error } = useSelector(
     (state) => state.grid
   );
 
@@ -31,6 +31,7 @@ export default function () {
       <Grid
         meta={meta}
         loader={loader}
+        error={error}
         dataSource={data}
         filter={filter}
         sorting={sorting}

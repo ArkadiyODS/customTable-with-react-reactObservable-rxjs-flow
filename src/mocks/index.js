@@ -2,7 +2,9 @@ import React from "react";
 import { get } from "lodash";
 
 export const mockedGridMeta = {
-  fetchUrl: "https://randomuser.me/api?results=10&seed=b45951b2648c0c64",
+  fetchUrl: "https://randomuser.me/api?results=50&seed=b45951b2648c0c64",
+  rowsNumber: 5,
+  rowHeight: 80,
   columns: [
     {
       title: "Gender",
@@ -10,7 +12,6 @@ export const mockedGridMeta = {
       width: 120,
       sortable: true,
       filterable: true,
-      order: 3,
       dataPath: "gender",
     },
     {
@@ -18,7 +19,6 @@ export const mockedGridMeta = {
       visible: true,
       sortable: true,
       filterable: true,
-      order: 1,
       dataPath: "email",
     },
     {
@@ -27,7 +27,7 @@ export const mockedGridMeta = {
       width: 200,
       sortable: true,
       filterable: true,
-      order: 2,
+      order: 1,
       dataPath: "name.first",
     },
     {
@@ -36,7 +36,7 @@ export const mockedGridMeta = {
       width: 200,
       sortable: true,
       filterable: true,
-      order: 5,
+      order: 3,
       dataPath: "name.last",
     },
     {

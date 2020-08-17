@@ -3,7 +3,7 @@ import type { Node } from "react";
 
 export type SortingEnum = "acs" | "desc" | "none";
 
-export type Sorting = { [key: string]: SortingEnum };
+export type Sorting = Map<string, SortingEnum>;
 
 export type ColumnMeta = {
   title: string,
@@ -20,7 +20,8 @@ export type ColumnMeta = {
 export type GridMeta = {
   columns: Array<ColumnMeta>,
   selectable?: boolean,
-  numberOfRows: number,
+  rowHeight: number,
+  rowsNumber: number,
 };
 
 export type Filter = {

@@ -1,39 +1,49 @@
 //@flow
-import React from "react";
-import type { ColumnMeta } from "../metaTypes";
+import * as React from "react";
+import type { GridMeta } from "../metaTypes";
 import Cell from "../Cell/Cell";
 import { FixedSizeList } from "react-window";
-import styled from "styled-components";
+import {
+  BORDER_COLOR,
+  ODD_ROW_BACKGROUND,
+  NoDataContainer,
+  Row,
+} from "../../shared";
 
-const Row = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-type BodyProps = {
-  columns: Array<ColumnMeta>,
+type BodyProps = GridMeta & {
   data: Array<any>,
 };
 
 export default function (props: BodyProps) {
+  const numberOfRows =
+    props.rowsNumber < props.data.length ? props.rowsNumber : props.data.length;
+  const listHeight = numberOfRows * props.rowHeight;
   return (
     <div>
-      <FixedSizeList
-        height={600}
-        itemCount={props.data.length}
-        itemSize={80}
-        width="100%"
-      >
-        {({ index, style }) => (
-          <Row style={style} columns={props.columns}>
-            {props.columns
-              .filter((column) => column.visible)
-              .map((column, i) => (
-                <Cell {...column} data={props.data[index]} key={i} />
-              ))}
-          </Row>
-        )}
-      </FixedSizeList>
+      {props.data.length === 0 ? (
+        <NoDataContainer $color={BORDER_COLOR}>NO DATA</NoDataContainer>
+      ) : (
+        <FixedSizeList
+          height={listHeight}
+          itemCount={props.data.length}
+          itemSize={props.rowHeight}
+          width="100%"
+        >
+          {({ index, style }: { index: number, style: {} }) => (
+            <Row
+              style={style}
+              columns={props.columns}
+              $backgroundColor={index % 2 ? null : ODD_ROW_BACKGROUND}
+            >
+              {props.columns
+                .filter((column) => column.visible)
+                .map((column, i) => (
+                  <Cell {...column} data={props.data[index]} key={i} />
+                ))}
+            </Row>
+          )}
+        </FixedSizeList>
+      )}
     </div>
   );
 }
