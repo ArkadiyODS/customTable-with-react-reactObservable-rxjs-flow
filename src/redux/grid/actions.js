@@ -9,7 +9,8 @@ export const UPDATE_GRID_DATA = "UPDATE_GRID_DATA",
   RESET_FILTER = "RESET_FILTER",
   UPDATE_SORTING = "UPDATE_SORTING",
   RESET_SORTING = "RESET_SORTING",
-  UPDATE_GRID_SELECTION = "UPDATE_GRID_SELECTION";
+  UPDATE_GRID_SELECTION = "UPDATE_GRID_SELECTION",
+  UPDATE_COLUMNS_ORDER = "UPDATE_COLUMNS_ORDER";
 // UPDATE_GRID_SELECTION_SINGLE = "UPDATE_GRID_SELECTION_SINGLE";
 
 type FilterAction = {
@@ -41,13 +42,19 @@ type GridDataSingleSelectionAction = {
   payload: { selectedItem: any, isSelected: boolean },
 };
 
+type GridColumnsOrderAction = {
+  type: "UPDATE_COLUMNS_ORDER",
+  payload: { initialIndex: number, swipedIndex: number },
+};
+
 export type GridAction =
   | FilterAction
   | SortingAction
   | LoadingAction
   | GridDataAction
   | GridDataSingleSelectionAction
-  | ErrorAction;
+  | ErrorAction
+  | GridColumnsOrderAction;
 
 export const startLoadingGridData = (): GridAction => ({
   type: START_LOADING_GRID_DATA,
@@ -79,6 +86,14 @@ export const updateSorting = (payload: Sorting): GridAction => ({
 
 export const updateGridSelection = (payload: Array<any>): GridAction => ({
   type: UPDATE_GRID_SELECTION,
+  payload,
+});
+
+export const updateGridColumnsOrder = (payload: {
+  initialIndex: number,
+  swipedIndex: number,
+}): GridAction => ({
+  type: UPDATE_COLUMNS_ORDER,
   payload,
 });
 

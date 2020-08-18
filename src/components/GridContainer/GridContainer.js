@@ -1,5 +1,5 @@
 //@flow
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { Filter, Sorting } from "../Grid/metaTypes";
 import {
@@ -7,13 +7,15 @@ import {
   startLoadingGridData,
   updateSorting,
   updateGridSelection,
+  updateGridColumnsOrder,
 } from "../../redux/grid/actions";
 import Grid from "../Grid/Grid";
+import type { GridState } from "../../redux/grid";
 
 export default function () {
   const dispatch = useDispatch();
   const { meta, data, selected, filter, sorting, loader, error } = useSelector(
-    (state) => state.grid
+    (state: { grid: GridState }): GridState => state.grid
   );
 
   const setSorting = useCallback((sortingString: Sorting) => {
@@ -26,6 +28,15 @@ export default function () {
   const setSelected = useCallback((selected: Array<any>) => {
     dispatch(updateGridSelection(selected));
   }, []);
+
+  const setColumnsOrder = useCallback(
+    (initialIndex: number, swipedIndex: number) => {
+      if (initialIndex !== swipedIndex) {
+        dispatch(updateGridColumnsOrder({ initialIndex, swipedIndex }));
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     dispatch(startLoadingGridData());
@@ -44,6 +55,7 @@ export default function () {
         onSortingChange={setSorting}
         selected={selected}
         onSelectionChange={setSelected}
+        onOrderChange={setColumnsOrder}
       />
     </div>
   );

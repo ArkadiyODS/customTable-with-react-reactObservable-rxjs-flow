@@ -58,6 +58,15 @@ export default function (
         newSorting.delete(key);
       }
       return { ...state, sorting: newSorting };
+    case Actions.UPDATE_COLUMNS_ORDER:
+      const { initialIndex, swipedIndex } = action.payload;
+      const newColumns = [...state.meta.columns];
+      const tempColumn = newColumns[initialIndex];
+      newColumns[initialIndex] = newColumns[swipedIndex];
+      newColumns[swipedIndex] = tempColumn;
+      newColumns[initialIndex].order = initialIndex;
+      newColumns[swipedIndex].order = swipedIndex;
+      return { ...state, meta: { ...state.meta, columns: newColumns } };
     //Not necessary to run it through redux
     // case Actions.UPDATE_GRID_SELECTION_SINGLE:
     //   const { selectedItem, isSelected } = action.payload;

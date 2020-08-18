@@ -32,6 +32,7 @@ export default React.memo<CheckboxProps>((props: CheckboxProps) => {
           <Label
             //hack for Safari
             style={{ width: 0 }}
+            //
             hidden
           >
             Hidden

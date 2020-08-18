@@ -17,6 +17,10 @@ type HeaderProps = {
   sortingChangeHandler?: (value: Sorting) => void,
   allSelected: boolean,
   selectionChangeHandler?: (value: boolean) => void,
+  orderChangeHandler?: (
+    currentCellIndex: number,
+    draggedCellIndex: number
+  ) => void,
 };
 
 export default function (props: HeaderProps) {
@@ -33,10 +37,12 @@ export default function (props: HeaderProps) {
         .map((column, i) => (
           <HeaderCell
             {...column}
+            index={i}
             filterValue={props.filter[column.dataPath]}
             filterChangeHandler={props.filterChangeHandler}
             sortingValue={props.sorting.get(column.dataPath)}
             sortingChangeHandler={props.sortingChangeHandler}
+            orderChangeHandler={props.orderChangeHandler}
             key={column.title + 1}
           />
         ))}

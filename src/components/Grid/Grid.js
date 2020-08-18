@@ -27,9 +27,10 @@ type GridProps = {
   onSortingChange?: (update: Sorting) => void,
   selected: Array<any>,
   onSelectionChange?: (selected: Array<any>) => void,
+  onOrderChange?: (currentCellIndex: number, draggedCellIndex: number) => void,
 };
 
-//TODO (Grid Meta change - resize, order, horizontal scrolling)
+//TODO (Grid Meta change - resize, horizontal scrolling)
 
 export default function (props: GridProps) {
   const { dataSource, selected, onSelectionChange, meta } = props;
@@ -100,6 +101,7 @@ export default function (props: GridProps) {
           sortingChangeHandler={props.onSortingChange}
           allSelected={allSelected}
           selectionChangeHandler={selectAll}
+          orderChangeHandler={props.onOrderChange}
         />
         {props.loader && (
           <LoaderContainer>

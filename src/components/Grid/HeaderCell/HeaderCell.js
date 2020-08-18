@@ -14,14 +14,20 @@ import {
 } from "../../shared";
 
 type HeaderCellProps = ColumnMeta & {
+  index: number,
   sortingValue?: SortingEnum,
   filterValue?: string,
   filterChangeHandler?: (value: Filter) => void,
   sortingChangeHandler?: (value: Sorting) => void,
+  orderChangeHandler?: (
+    currentCellIndex: number,
+    draggedCellIndex: number
+  ) => void,
 };
 
 export default memo<HeaderCellProps>((props: HeaderCellProps) => {
   const {
+    index,
     title,
     dataPath,
     sortable,
@@ -30,9 +36,11 @@ export default memo<HeaderCellProps>((props: HeaderCellProps) => {
     filterValue,
     filterChangeHandler,
     sortingChangeHandler,
+    orderChangeHandler,
     width,
     order,
   } = props;
+
   const onFilterChange = useCallback(
     (evt) => {
       const { value } = evt.target;
@@ -50,8 +58,35 @@ export default memo<HeaderCellProps>((props: HeaderCellProps) => {
     },
     [dataPath, sortingValue, sortingChangeHandler]
   );
+
+  const onDrop = useCallback(
+    (evt) => {
+      evt.preventDefault();
+      evt.stopPropagation();
+      const draggedCellIndex = evt.dataTransfer.getData("text/plain");
+      orderChangeHandler &&
+        orderChangeHandler(index, Number.parseInt(draggedCellIndex));
+    },
+    [index, orderChangeHandler]
+  );
+
+  const onDragStart = useCallback(
+    (evt) => {
+      evt.dataTransfer.setData("text/plain", index);
+      evt.dataTransfer.effectAllowed = "move";
+    },
+    [index]
+  );
+  const onDragOver = useCallback((evt) => {
+    evt.preventDefault();
+    evt.stopPropagation();
+  }, []);
   return (
     <CellContainer
+      draggable="true"
+      onDragStart={onDragStart}
+      onDragOver={onDragOver}
+      onDrop={onDrop}
       $order={order}
       $width={width}
       $borderColor={LIGHT_GREY_COLOR}
