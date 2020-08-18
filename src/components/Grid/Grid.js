@@ -82,12 +82,12 @@ export default function (props: GridProps) {
   );
 
   useEffect(() => {
-    if (!isShowSelected) {
+    if (!isShowSelected || selected.length === 0) {
       setData(dataSource);
     } else {
       setData(selected);
     }
-  }, [dataSource, isShowSelected]);
+  }, [dataSource, selected, isShowSelected]);
 
   return (
     <>

@@ -26,7 +26,17 @@ export default React.memo<CheckboxProps>((props: CheckboxProps) => {
   return (
     <Field>
       <Checkbox checked={checked} onChange={setChecked}>
-        {label ? <Label>{label}</Label> : <Label hidden>Hidden</Label>}
+        {label ? (
+          <Label>{label}</Label>
+        ) : (
+          <Label
+            //hack for Safari
+            style={{ width: 0 }}
+            hidden
+          >
+            Hidden
+          </Label>
+        )}
       </Checkbox>
     </Field>
   );

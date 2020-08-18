@@ -7,10 +7,14 @@ import GridContainer from "./components/GridContainer";
 
 const store = configureStore();
 
+const theme = {
+  ...DEFAULT_THEME,
+};
+
 function App() {
   return (
     <Provider store={store}>
-      <ThemeProvider theme={{ ...DEFAULT_THEME }}>
+      <ThemeProvider theme={theme}>
         <GridContainer />
       </ThemeProvider>
     </Provider>
